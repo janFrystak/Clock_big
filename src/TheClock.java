@@ -74,7 +74,7 @@ public class TheClock extends JFrame {
                 setBackground(new Color(238, 130, 238));
             }
             else {
-                setBackground(new Color(255, 255, 255));
+                setBackground(new Color(0, 0, 0));
             }
             color = !color;
         }
