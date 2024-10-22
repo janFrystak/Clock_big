@@ -9,6 +9,6 @@ public class Main {
         clock.setVisible(true);
 
         // Schedule the task to run every 1 second (initial delay of 0 seconds)
-        scheduler.scheduleAtFixedRate(clock::displayTime, 0,  500, TimeUnit.MILLISECONDS);
+        scheduler.scheduleAtFixedRate(clock::displayTime, 0,  250, TimeUnit.MILLISECONDS);
     }
 }

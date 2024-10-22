@@ -12,7 +12,6 @@ public class TheClock extends JFrame {
     private JButton resetButton;
     private JButton addButton;
     private boolean color = true;
-    private boolean toRepeat = true;
     private ArrayList<LocalTime> timeTable = new ArrayList<>(Arrays.asList(
             LocalTime.of(7, 45),  // 7:45
             LocalTime.of(8, 40),  // 8:40
@@ -22,12 +21,10 @@ public class TheClock extends JFrame {
             LocalTime.of(12, 25), // 12:25
             LocalTime.of(13, 20), // 13:20
             LocalTime.of(14, 10), // 14:10
-            LocalTime.of(15, 0),
-            LocalTime.of(22,25)
+            LocalTime.of(15, 0)
     ));
     private LocalTime displayedTime;
 
-    //private int repeatFreq = 1;
 
     /*
 * 1.More imaginatime
@@ -60,7 +57,7 @@ public class TheClock extends JFrame {
             displayedTime = getClosestTime();
             panel.setBackground(Color.WHITE);
             textField1.setBackground(Color.WHITE);
-            textField1.setForeground(Color.WHITE);
+            textField1.setForeground(Color.BLACK);
 
         });
         addButton.addActionListener(e -> showTimeInput());
@@ -95,7 +92,7 @@ public class TheClock extends JFrame {
                 textField1.setText("GO GO GO");
                 Blik(textField1, new Color(238, 130, 238), Color.black);
 
-                //repeatFreq = 500;
+
             }
         }
         else {
@@ -127,50 +124,50 @@ public class TheClock extends JFrame {
     }
     public void showTimeInput(){
 
-        // Create a new JDialog (popup window)
         JDialog dialog = new JDialog((Frame) null, "Enter Time", true);
         dialog.setSize(300, 150);
         dialog.setLayout(new FlowLayout());
 
-        // Create a label and text field for time input
         JLabel label = new JLabel("Enter Time (HH:MM):");
         JTextField timeField = new JTextField(10);
 
-        // Create a submit button
         JButton submitButton = new JButton("Submit");
 
-        // Add an action listener to handle the input when the submit button is clicked
+
         submitButton.addActionListener(e -> {
                 String enteredTime = timeField.getText();
-                // Validate or process the entered time here
-                //return enteredTime
+
                 if(isValidTime(enteredTime)){
-                    timeTable.add(LocalTime.of(Integer.parseInt(enteredTime.substring(0,1)),Integer.parseInt(enteredTime.substring(4,5))));
+                    int h = Integer.parseInt(enteredTime.substring(0,1));
+                    int m = Integer.parseInt(enteredTime.substring(4,5));
+                    timeTable.add(LocalTime.of(h,m));
                 }
-                else System.out.println("Bad Time " + enteredTime);
+                else {
+                    System.out.println("Bad Time " + enteredTime);
+                }
 
 
-                // Close the popup window
                 dialog.dispose();
 
         });
 
-        // Add components to the dialog
+
         dialog.add(label);
         dialog.add(timeField);
         dialog.add(submitButton);
 
-        // Show the dialog in the center of the screen
+
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
     }
+
     public boolean isValidTime(String time){
-        // Check if the input has exactly 5 characters (HH:MM)
+
         if (time == null || time.length() != 5) {
             return false;
         }
 
-        // Check if the third character is a colon ':'
+
         if (time.charAt(2) != ':') {
             return false;
         }
@@ -180,17 +177,17 @@ public class TheClock extends JFrame {
             int hours = Integer.parseInt(time.substring(0, 2));
             int minutes = Integer.parseInt(time.substring(3, 5));
 
-            // Validate the range for hours (0-23) and minutes (0-59)
+
             if (hours < 0 || hours > 23  || minutes < 0 || minutes > 59) {
                 return false;
             }
 
         } catch (NumberFormatException e) {
-            // Catch any parsing errors (non-numeric values in hours or minutes)
+
             return false;
         }
 
-        // If all checks pass, the input is valid
+
         return true;
     }
 
