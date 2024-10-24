@@ -1,10 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+
 
 public class TheClock extends JFrame {
     private JTextField textField1;
@@ -86,7 +88,7 @@ public class TheClock extends JFrame {
 
 
             if(seconds >= 0) {
-                textField1.setText(convertTime(minutes) + ":" + convertTime(seconds));
+                textField1.setText(roundToTwoDigits(minutesToDegrees(minutes)) + "°"+":" + secondsToDegrees(seconds)+"°");
             }
             else {
                 textField1.setText("GO GO GO");
@@ -100,6 +102,22 @@ public class TheClock extends JFrame {
             textField1.setText("GO TO SLEEP WEIRDO");
 
         }
+    }
+    public static String roundToTwoDigits(Double value) {
+        DecimalFormat df = new DecimalFormat("#.#");
+        return df.format(value);
+    }
+    public double minutesToDegrees(long minutes) {
+        // Conversion factor: 6 degrees per minute
+        double degreesPerMinute = 6.0;
+        // Convert minutes to degrees
+        return  minutes * degreesPerMinute;
+    }
+    public double secondsToDegrees(long seconds) {
+        // Conversion factor: 1/10 degrees per second
+        double degreesPerSecond = 1.0 / 10.0;
+        // Convert seconds to degrees
+        return seconds * degreesPerSecond;
     }
     public String convertTime(long time){
         if(time <10){
