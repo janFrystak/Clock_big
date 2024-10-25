@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -11,6 +10,7 @@ public class TheClock extends JFrame {
     private JPanel panel;
     private JButton resetButton;
     private JButton addButton;
+    private JButton selectButton;
     private boolean color = true;
     private ArrayList<LocalTime> timeTable = new ArrayList<>(Arrays.asList(
             LocalTime.of(7, 45),  // 7:45
@@ -50,17 +50,18 @@ public class TheClock extends JFrame {
         setSize(875, 500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         textField1.setEditable(false);
-        textField1.setPreferredSize(new Dimension(500, 100)); // Width: 300px, Height: 50px
+        textField1.setPreferredSize(new Dimension(500,300)); // Width: 300px, Height: 50px
         textField1.setHorizontalAlignment(SwingConstants.CENTER);
         textField1.setFont(new Font("Arial", Font.PLAIN, 75));
         resetButton.addActionListener(e -> {
             displayedTime = getClosestTime();
-            panel.setBackground(Color.WHITE);
-            textField1.setBackground(Color.WHITE);
-            textField1.setForeground(Color.BLACK);
+            panel.setBackground(new Color(255,255,255));
+            textField1.setBackground(new Color(255,255,255));
+            textField1.setForeground(new Color(0,0,0));
 
         });
         addButton.addActionListener(e -> showTimeInput());
+        selectButton.addActionListener(e ->selectTimeInput());
     }
 
     public LocalTime getClosestTime(){
@@ -74,19 +75,24 @@ public class TheClock extends JFrame {
         }
         return null;
     }
+
     public void displayTime(){
 
 
 
         if (displayedTime != null) {
             Duration duration = Duration.between(LocalTime.now(),displayedTime);
-            //long hours = duration.toHours();
-            long minutes = duration.toMinutes() % 60; // Remainder of minutes after hours
-            long seconds = duration.getSeconds() % 60; // Remainder of seconds after minutes
+            long hours = duration.toHours();
+            long minutes = duration.toMinutes() % 60;
+            long seconds = duration.getSeconds() % 60;
 
 
             if(seconds >= 0) {
-                textField1.setText(convertTime(minutes) + ":" + convertTime(seconds));
+                if(hours > 0){
+                    textField1.setText(convertTime(hours) + ":" + convertTime(minutes) + ":" + convertTime(seconds));
+                }
+                else textField1.setText(convertTime(minutes) + ":" + convertTime(seconds));
+
             }
             else {
                 textField1.setText("GO GO GO");
@@ -120,6 +126,25 @@ public class TheClock extends JFrame {
                 field.setForeground(color1);
             }
             this.color = !this.color;
+
+    }
+    public void selectTimeInput(){
+        JDialog dialog = new JDialog((Frame) null, "Enter Time", true);
+        dialog.setSize(300, 500);
+        dialog.setLayout(new FlowLayout());
+
+        for(LocalTime time: timeTable){
+            JButton button = new JButton(String.valueOf(time));
+            dialog.add(button);
+            button.addActionListener(e -> {
+                displayedTime = time;
+            });
+        }
+        JButton submitButton = new JButton("Done");
+        submitButton.addActionListener(e -> dialog.dispose());
+        dialog.add(submitButton);
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
 
     }
     public void showTimeInput(){
