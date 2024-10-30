@@ -53,15 +53,15 @@ public class TheClock extends JFrame {
         textField1.setPreferredSize(new Dimension(500,300)); // Width: 300px, Height: 50px
         textField1.setHorizontalAlignment(SwingConstants.CENTER);
         textField1.setFont(new Font("Arial", Font.PLAIN, 75));
-        resetButton.addActionListener(e -> {
-            displayedTime = getClosestTime();
-            panel.setBackground(new Color(255,255,255));
-            textField1.setBackground(new Color(255,255,255));
-            textField1.setForeground(new Color(0,0,0));
-
-        });
+        resetButton.addActionListener(e -> Reset());
         addButton.addActionListener(e -> showTimeInput());
         selectButton.addActionListener(e ->selectTimeInput());
+    }
+    public void Reset(){
+        displayedTime = getClosestTime();
+        panel.setBackground(new Color(255,255,255));
+        textField1.setBackground(new Color(255,255,255));
+        textField1.setForeground(new Color(0,0,0));
     }
 
     public LocalTime getClosestTime(){
@@ -137,7 +137,9 @@ public class TheClock extends JFrame {
             JButton button = new JButton(String.valueOf(time));
             dialog.add(button);
             button.addActionListener(e -> {
+                Reset();
                 displayedTime = time;
+
             });
         }
         JButton submitButton = new JButton("Done");
@@ -163,9 +165,12 @@ public class TheClock extends JFrame {
                 String enteredTime = timeField.getText();
 
                 if(isValidTime(enteredTime)){
-                    int h = Integer.parseInt(enteredTime.substring(0,1));
-                    int m = Integer.parseInt(enteredTime.substring(4,5));
+                    String[] block = enteredTime.split(":");
+                    int h = Integer.parseInt(block[0]);
+                    int m = Integer.parseInt(block[1]);
+                    System.out.println(h + " " + m);
                     timeTable.add(LocalTime.of(h,m));
+                    System.out.println(LocalTime.of(h,m));
                 }
                 else {
                     System.out.println("Bad Time " + enteredTime);
@@ -187,28 +192,32 @@ public class TheClock extends JFrame {
     }
 
     public boolean isValidTime(String time){
-
-        if (time == null || time.length() != 5) {
+        //      Test 1
+        if (time != null & time.length() < 6 & time.length() > 2) {
+            System.out.println("Test1 failed");
             return false;
         }
 
-
-        if (time.charAt(2) != ':') {
+        //      Test 2
+        if (time.charAt(2) != ':' || time.charAt(1) != ':') {
+            System.out.println("Test2 failed");
             return false;
         }
 
         try {
             // Parse the hours and minutes
-            int hours = Integer.parseInt(time.substring(0, 2));
-            int minutes = Integer.parseInt(time.substring(3, 5));
+            String[] block = time.split(":");
+            int hours = Integer.parseInt(block[0]);
+            int minutes = Integer.parseInt(block[1]);
 
-
+        //      Test 4
             if (hours < 0 || hours > 23  || minutes < 0 || minutes > 59) {
+                System.out.println("Test4 failed");
                 return false;
             }
-
+        //      Test 3
         } catch (NumberFormatException e) {
-
+            System.out.println("Test3 failed");
             return false;
         }
 
