@@ -162,18 +162,19 @@ public class TheClock extends JFrame {
 
 
         submitButton.addActionListener(e -> {
-                String enteredTime = timeField.getText();
 
-                if(isValidTime(enteredTime)){
-                    String[] block = enteredTime.split(":");
-                    int h = Integer.parseInt(block[0]);
-                    int m = Integer.parseInt(block[1]);
-                    System.out.println(h + " " + m);
-                    timeTable.add(LocalTime.of(h,m));
-                    System.out.println(LocalTime.of(h,m));
-                }
-                else {
-                    System.out.println("Bad Time " + enteredTime);
+            String enteredTime = timeField.getText();
+                if(!enteredTime.isEmpty()) {
+                    if (isValidTime(enteredTime)) {
+                        String[] block = enteredTime.split(":");
+                        int h = Integer.parseInt(block[0]);
+                        int m = Integer.parseInt(block[1]);
+                        System.out.println(h + " " + m);
+                        timeTable.add(LocalTime.of(h, m));
+                        System.out.println(LocalTime.of(h, m));
+                    } else {
+                        System.out.println("Bad Time " + enteredTime);
+                    }
                 }
 
 
@@ -193,7 +194,12 @@ public class TheClock extends JFrame {
 
     public boolean isValidTime(String time){
         //      Test 1
-        if (time != null & time.length() < 6 & time.length() > 2) {
+        if (time == null & time.length() > 5 || time.length() < 3) {
+            System.out.println("Test1 failed");
+            return false;
+        }
+
+        if (time == null) {
             System.out.println("Test1 failed");
             return false;
         }

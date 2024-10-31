@@ -11,7 +11,6 @@
   <component name="ChangeListManager">
     <list default="true" id="33a7a20f-33cd-4a85-aa54-59981dc43651" name="Changes" comment="change color">
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_24_10_2024_8_47__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_24_10_2024_8_47__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/TheClock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TheClock.java" afterDir="false" />
     </list>
@@ -63,8 +62,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.17011.79" />
-        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.17011.79" />
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23339.11" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23339.11" />
       </set>
     </attachedChunks>
   </component>
@@ -78,6 +77,7 @@
       <updated>1729262844864</updated>
       <workItem from="1729262845894" duration="9359000" />
       <workItem from="1729361487814" duration="7809000" />
+      <workItem from="1729596622900" duration="2342000" />
     </task>
     <task id="LOCAL-00001" summary="workd somewhat">
       <option name="closed" value="true" />
