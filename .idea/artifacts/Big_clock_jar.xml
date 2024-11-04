@@ -2,9 +2,6 @@
   <artifact type="jar" name="Big_clock:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/Big_clock_jar</output-path>
     <root id="archive" name="Big_clock.jar">
-      <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/bin/META-INF/MANIFEST.MF" />
-      </element>
       <element id="module-output" name="Big_clock" />
     </root>
   </artifact>

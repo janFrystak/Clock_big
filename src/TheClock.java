@@ -4,6 +4,9 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class TheClock extends JFrame {
     private JTextField textField1;
@@ -11,8 +14,22 @@ public class TheClock extends JFrame {
     private JButton resetButton;
     private JButton addButton;
     private JButton selectButton;
+    private JCheckBox breakCheck;
     private boolean color = true;
-    private ArrayList<LocalTime> timeTable = new ArrayList<>(Arrays.asList(
+    private boolean defaultTable = true;
+    private ArrayList<LocalTime> breakTable = new ArrayList<>(Arrays.asList(
+            LocalTime.of(7, 0),
+            LocalTime.of(7, 55),
+            LocalTime.of(8, 45),
+            LocalTime.of(9, 50),
+            LocalTime.of(10, 45),
+            LocalTime.of(11, 40),
+            LocalTime.of(12, 35),
+            LocalTime.of(13, 25),
+            LocalTime.of(14, 15)
+            ));
+    private ArrayList<LocalTime> timeTable = new ArrayList<>();
+    private ArrayList<LocalTime> lessonTable = new ArrayList<>(Arrays.asList(
             LocalTime.of(7, 45),  // 7:45
             LocalTime.of(8, 40),  // 8:40
             LocalTime.of(9, 30),  // 9:30
@@ -52,12 +69,32 @@ public class TheClock extends JFrame {
         textField1.setEditable(false);
         textField1.setPreferredSize(new Dimension(500,300)); // Width: 300px, Height: 50px
         textField1.setHorizontalAlignment(SwingConstants.CENTER);
-        textField1.setFont(new Font("Arial", Font.PLAIN, 75));
-        resetButton.addActionListener(e -> Reset());
+        textField1.setFont(new Font("Arial", Font.ITALIC, 75));
+        resetButton.addActionListener(e -> reset());
         addButton.addActionListener(e -> showTimeInput());
         selectButton.addActionListener(e ->selectTimeInput());
+        breakCheck.addActionListener(e -> {
+            defaultTable = breakCheck.isEnabled();
+            actuateTable();
+            reset();
+        });
+        timeTable = lessonTable;
     }
-    public void Reset(){
+    public void actuateTable(){
+        if(defaultTable){
+            timeTable = lessonTable;
+        }
+        else timeTable = breakTable;
+    }
+    public static void main(String[] args) {
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        TheClock clock = new TheClock();
+        clock.setVisible(true);
+
+        // Schedule the task to run every 1 second (initial delay of 0 seconds)
+        scheduler.scheduleAtFixedRate(clock::displayTime, 0,  250, TimeUnit.MILLISECONDS);
+    }
+    public void reset(){
         displayedTime = getClosestTime();
         panel.setBackground(new Color(255,255,255));
         textField1.setBackground(new Color(255,255,255));
@@ -96,7 +133,7 @@ public class TheClock extends JFrame {
             }
             else {
                 textField1.setText("GO GO GO");
-                Blik(textField1, new Color(238, 130, 238), Color.black);
+                blink(textField1, new Color(238, 130, 238), Color.black);
 
 
             }
@@ -114,7 +151,7 @@ public class TheClock extends JFrame {
         else return String.valueOf(time);
 
     }
-    public void Blik(JTextField field, Color color1, Color color2){
+    public void blink(JTextField field, Color color1, Color color2){
 
             if (this.color) {
                 panel.setBackground(color1);
@@ -137,7 +174,7 @@ public class TheClock extends JFrame {
             JButton button = new JButton(String.valueOf(time));
             dialog.add(button);
             button.addActionListener(e -> {
-                Reset();
+                reset();
                 displayedTime = time;
 
             });
@@ -168,9 +205,10 @@ public class TheClock extends JFrame {
                     String[] block = enteredTime.split(":");
                     int h = Integer.parseInt(block[0]);
                     int m = Integer.parseInt(block[1]);
-                    System.out.println(h + " " + m);
-                    timeTable.add(LocalTime.of(h,m));
-                    System.out.println(LocalTime.of(h,m));
+                    //int s = Integer.parseInt(block[2]);
+                    System.out.println(h + " " + m /*+ " "+s*/);
+                    timeTable.add(LocalTime.of(h,m/*,s*/));
+                    System.out.println(LocalTime.of(h,m/*,s*/));
                 }
                 else {
                     System.out.println("Bad Time " + enteredTime);
@@ -193,25 +231,26 @@ public class TheClock extends JFrame {
 
     public boolean isValidTime(String time){
         //      Test 1
-        if (time != null & time.length() < 6 & time.length() > 2) {
+        if (time != null & time.length() < 8 & time.length() > 6) {
             System.out.println("Test1 failed");
             return false;
         }
 
         //      Test 2
-        if (time.charAt(2) != ':' || time.charAt(1) != ':') {
+        /*if (time.contains(":")) {
             System.out.println("Test2 failed");
             return false;
-        }
+        }*/
 
         try {
             // Parse the hours and minutes
             String[] block = time.split(":");
             int hours = Integer.parseInt(block[0]);
             int minutes = Integer.parseInt(block[1]);
+            //int sec = Integer.parseInt(block[3]);
 
         //      Test 4
-            if (hours < 0 || hours > 23  || minutes < 0 || minutes > 59) {
+            if (hours < 0 || hours > 23  || minutes < 0 || minutes > 59 /*|| sec >59*/) {
                 System.out.println("Test4 failed");
                 return false;
             }
