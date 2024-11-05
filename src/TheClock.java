@@ -15,8 +15,9 @@ public class TheClock extends JFrame {
     private JButton addButton;
     private JButton selectButton;
     private JCheckBox breakCheck;
+    private JLabel whatLabel;
     private boolean color = true;
-    private boolean defaultTable = true;
+    //private boolean defaultTable = true;
     private ArrayList<LocalTime> breakTable = new ArrayList<>(Arrays.asList(
             LocalTime.of(7, 0),
             LocalTime.of(7, 55),
@@ -29,6 +30,7 @@ public class TheClock extends JFrame {
             LocalTime.of(14, 15)
             ));
     private ArrayList<LocalTime> timeTable = new ArrayList<>();
+    private ArrayList<LocalTime> additionTable = new ArrayList<>();
     private ArrayList<LocalTime> lessonTable = new ArrayList<>(Arrays.asList(
             LocalTime.of(7, 45),  // 7:45
             LocalTime.of(8, 40),  // 8:40
@@ -59,12 +61,17 @@ public class TheClock extends JFrame {
 
 
     public TheClock() {
-
+        actuateTable(breakCheck.isSelected());
         displayedTime = getClosestTime();
+
+
         setContentPane(panel);
         setVisible(true);
         setTitle("TIME");
         setSize(875, 500);
+        panel.setBackground(new Color(255,255,255));
+        textField1.setBackground(new Color(255,255,255));
+        textField1.setForeground(new Color(0,0,0));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         textField1.setEditable(false);
         textField1.setPreferredSize(new Dimension(500,300)); // Width: 300px, Height: 50px
@@ -74,17 +81,24 @@ public class TheClock extends JFrame {
         addButton.addActionListener(e -> showTimeInput());
         selectButton.addActionListener(e ->selectTimeInput());
         breakCheck.addActionListener(e -> {
-            defaultTable = breakCheck.isEnabled();
-            actuateTable();
+
+            actuateTable(breakCheck.isSelected());
             reset();
         });
-        timeTable = lessonTable;
+        //timeTable = lessonTable;
+
     }
-    public void actuateTable(){
-        if(defaultTable){
+    public void actuateTable(boolean biss){
+        if(!biss){
             timeTable = lessonTable;
+            timeTable.addAll(additionTable);
+            whatLabel.setText("Time till break");
         }
-        else timeTable = breakTable;
+        else {
+            timeTable = breakTable;
+            timeTable.addAll(additionTable);
+            whatLabel.setText("Time till lesson");
+        }
     }
     public static void main(String[] args) {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -207,7 +221,7 @@ public class TheClock extends JFrame {
                     int m = Integer.parseInt(block[1]);
                     //int s = Integer.parseInt(block[2]);
                     System.out.println(h + " " + m /*+ " "+s*/);
-                    timeTable.add(LocalTime.of(h,m/*,s*/));
+                    additionTable.add(LocalTime.of(h,m/*,s*/));
                     System.out.println(LocalTime.of(h,m/*,s*/));
                 }
                 else {

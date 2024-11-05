@@ -10,10 +10,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="33a7a20f-33cd-4a85-aa54-59981dc43651" name="Changes" comment="addet select">
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/Big_clock_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/Big_clock_jar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_24_10_2024_8_47_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_24_10_2024_8_47__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/TheClock.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/TheClock.form" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/TheClock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TheClock.java" afterDir="false" />
@@ -62,7 +58,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH": "298",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "break-will-fix-it",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Jan/IdeaProjects/Big_clock/bin",
     "node.js.detected.package.eslint": "true",
