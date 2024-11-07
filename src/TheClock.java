@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -110,9 +111,13 @@ public class TheClock extends JFrame {
     }
     public void reset(){
         displayedTime = getClosestTime();
+        resetColour(textField1);
+    }
+
+    public void resetColour(JTextField textField){
         panel.setBackground(new Color(255,255,255));
-        textField1.setBackground(new Color(255,255,255));
-        textField1.setForeground(new Color(0,0,0));
+        textField.setBackground(new Color(255,255,255));
+        textField.setForeground(new Color(0,0,0));
     }
 
     public LocalTime getClosestTime(){
@@ -141,13 +146,20 @@ public class TheClock extends JFrame {
             if(seconds >= 0) {
                 if(hours > 0){
                     textField1.setText(convertTime(hours) + ":" + convertTime(minutes) + ":" + convertTime(seconds));
+
                 }
                 else textField1.setText(convertTime(minutes) + ":" + convertTime(seconds));
+                /*if(seconds<=58){
+                    blink(textField1, Color.BLACK, Color.ORANGE, true);
+                }
+                if(seconds<=10){
+                    blink(textField1, Color.BLACK, Color.RED, true);
+                }*/
 
             }
-            else {
+            else  {
                 textField1.setText("GO GO GO");
-                blink(textField1, new Color(238, 130, 238), Color.black);
+                blink(textField1, new Color(238, 130, 238), Color.black, true);
 
 
             }
@@ -165,7 +177,8 @@ public class TheClock extends JFrame {
         else return String.valueOf(time);
 
     }
-    public void blink(JTextField field, Color color1, Color color2){
+    public void blink(JTextField field, Color color1, Color color2, boolean on){
+        if(on) {
 
             if (this.color) {
                 panel.setBackground(color1);
@@ -178,12 +191,14 @@ public class TheClock extends JFrame {
             }
             this.color = !this.color;
 
+    }else resetColour(textField1);
     }
     public void selectTimeInput(){
         JDialog dialog = new JDialog((Frame) null, "Enter Time", true);
         dialog.setSize(300, 500);
         dialog.setLayout(new FlowLayout());
-
+        //actuateTable(breakCheck.isSelected());
+        sortList(timeTable);
         for(LocalTime time: timeTable){
             JButton button = new JButton(String.valueOf(time));
             dialog.add(button);
@@ -193,6 +208,7 @@ public class TheClock extends JFrame {
 
             });
         }
+
         JButton submitButton = new JButton("Done");
         submitButton.addActionListener(e -> dialog.dispose());
         dialog.add(submitButton);
@@ -222,6 +238,7 @@ public class TheClock extends JFrame {
                     //int s = Integer.parseInt(block[2]);
                     System.out.println(h + " " + m /*+ " "+s*/);
                     additionTable.add(LocalTime.of(h,m/*,s*/));
+                    actuateTable(breakCheck.isSelected());
                     System.out.println(LocalTime.of(h,m/*,s*/));
                 }
                 else {
@@ -242,7 +259,10 @@ public class TheClock extends JFrame {
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
     }
-
+    public void sortList(ArrayList<LocalTime> list){
+        //Comparator<LocalTime> default_compare = new Comparator<LocalTime>() {}
+        list.sort((o1, o2) -> 0);
+    }
     public boolean isValidTime(String time){
         //      Test 1
         if (time != null & time.length() < 8 & time.length() > 6) {
