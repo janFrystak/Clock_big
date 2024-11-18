@@ -1,10 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.*;
+import java.lang.reflect.Array;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -43,6 +46,7 @@ public class TheClock extends JFrame {
             LocalTime.of(14, 10), // 14:10
             LocalTime.of(15, 0)
     ));
+    private ArrayList<LocalTime> memoryTable = new ArrayList<>();
     private LocalTime displayedTime;
 
 
@@ -64,7 +68,7 @@ public class TheClock extends JFrame {
     public TheClock() {
         actuateTable(breakCheck.isSelected());
         displayedTime = getClosestTime();
-
+        fillInMemoryTable();
 
         setContentPane(panel);
         setVisible(true);
@@ -89,6 +93,20 @@ public class TheClock extends JFrame {
         //timeTable = lessonTable;
 
     }
+    public void fillInMemoryTable(){
+        memoryTable = convertStringListToTimeList(readFile());
+    }
+    public ArrayList<LocalTime> convertStringListToTimeList(ArrayList<String> stringList){
+        ArrayList<LocalTime> timeList = new ArrayList<>();
+        if (!stringList.isEmpty()){
+            for(String string: stringList){
+                String block[] = string.split(":");
+                timeList.add(LocalTime.of(Integer.parseInt(block[0]), Integer.parseInt(block[1])));
+            }
+            return timeList;
+        }
+        return null;
+    }
     public void actuateTable(boolean biss){
         if(!biss){
             timeTable = lessonTable;
@@ -100,6 +118,27 @@ public class TheClock extends JFrame {
             timeTable.addAll(additionTable);
             whatLabel.setText("Time till lesson");
         }
+    }
+    public void writeToFile(String value){
+
+        try (Writer writer = new BufferedWriter(new FileWriter("src/main/java/memory.txt"));){
+            writer.append(value);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "IOE problem found");
+        }
+    }
+    protected ArrayList<String> readFile(){
+        ArrayList<String> list = new ArrayList<>();
+        try(Scanner scanner = new Scanner(new BufferedReader(new FileReader("src/main/java/memory.txt"))))
+        {
+            while(scanner.hasNextLine()){
+                list.add(scanner.nextLine());
+            }
+        } catch(IOException e) {
+            JOptionPane.showMessageDialog(this, "IOE problem found");
+            return null;
+        }
+        return list;
     }
     public static void main(String[] args) {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -232,6 +271,7 @@ public class TheClock extends JFrame {
                 String enteredTime = timeField.getText();
 
                 if(isValidTime(enteredTime)){
+                    writeToFile(enteredTime);
                     String[] block = enteredTime.split(":");
                     int h = Integer.parseInt(block[0]);
                     int m = Integer.parseInt(block[1]);
